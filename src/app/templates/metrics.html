@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Model Performance</title>
+    <style>
+        body { font-family:'Segoe UI', Tahoma, sans-serif; background:#f8f9fa; }
+        .container {
+            max-width:600px; margin:40px auto; padding:20px;
+            background:#fff; border-radius:12px;
+            box-shadow:0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .center-block { text-align:center; }
+        ul { color:#444; list-style:none; padding:0; margin-top:10px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Back link (left) -->
+    <a href="/" style="text-decoration:none; color:#1976d2; font-weight:600;
+                       display:inline-block; margin-bottom:10px; margin-top:10px;">
+        ← Back to Prediction / Menu
+    </a>
+
+    <!-- Centered metrics content -->
+    <div class="center-block">
+        <h1>Model Performance</h1>
+        <p>Evaluation metrics for the rating prediction model:</p>
+        <ul>
+            <li>R² Score: {{ '%.3f'|format(metrics.r2) }}</li>
+            <li>MAE: {{ '%.3f'|format(metrics.mae) }}</li>
+            <li>RMSE: {{ '%.3f'|format(metrics.rmse) }}</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+const sideMenu = document.getElementById('sideMenu');
+document.getElementById('sideMenuToggle').addEventListener('click', () => {
+    if (sideMenu.style.left === '0px') {
+        sideMenu.style.left = '-220px';
+    } else {
+        sideMenu.style.left = '0px';
+    }
+});
+</script>
+</body>
+</html>

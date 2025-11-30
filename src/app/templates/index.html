@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Rating Prediction</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+        }
+        h1 {
+            color: #d32f2f;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #d32f2f;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #b71c1c;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #d32f2f;
+        }
+        .error {
+            color: #c62828;
+            margin-top: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 6px;
+            text-align: left;
+        }
+        th {
+            background: #eee;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Left hamburger menu icon -->
+    <div id="sideMenuToggle"
+         style="position:absolute; left:10px; top:10px; cursor:pointer; font-size:22px;">
+        &#9776;
+    </div>
+
+    <!-- Side menu -->
+    <div id="sideMenu" style="
+        position:fixed; left:-220px; top:0; width:220px; height:100%;
+        background:#263238; color:white; padding:20px;
+        box-shadow:2px 0 6px rgba(0,0,0,0.2);
+        transition:left 0.3s; z-index:1000;">
+        <h3 style="margin-top:0; margin-bottom:20px;">Menu</h3>
+        <ul style="list-style:none; padding:0; margin:0; font-size:15px;">
+    <li style="margin-bottom:12px;">
+        <a href="/heatmap" target="_blank" style="color:white; text-decoration:none;">
+            Heatmap
+        </a>
+    </li>
+    <li style="margin-bottom:12px;">
+        <a href="/metrics" target="_blank" style="color:white; text-decoration:none;">
+            Model Performance
+        </a>
+    </li>
+    <li style="margin-bottom:12px;">
+        <a href="/top" target="_blank" style="color:white; text-decoration:none;">
+            Top Recommendations
+        </a>
+    </li>
+</ul>
+    </div>
+    <!-- Header with Compare link -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <h1 style="flex:1; text-align:center; margin:0;">Restaurant Rating Prediction</h1>
+        <a href="/compare" target="_blank"
+           style="background:#1976d2; color:white; border:none; padding:8px 14px;
+                  border-radius:6px; cursor:pointer; font-size:14px;
+                  text-decoration:none; margin-left:10px;">
+            Compare Mode
+        </a>
+    </div>
+
+    <!-- Single-restaurant prediction form -->
+    <form id="ratingForm">
+        <div class="form-group">
+            <label for="location">Location</label>
+            <select id="location" name="location" required>
+                <option value="">Select Location</option>
+                <option value="Koramangala">Koramangala</option>
+                <option value="Indiranagar">Indiranagar</option>
+                <option value="HSR Layout">HSR Layout</option>
+                <option value="BTM Layout">BTM Layout</option>
+                <option value="Jayanagar">Jayanagar</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Restaurant Name</label>
+            <input type="text" id="name" name="name"
+                   placeholder="e.g., Spice Hub" required>
+        </div>
+
+        <div class="form-group">
+            <label for="cuisines">Cuisines</label>
+            <select id="cuisines" name="cuisines" required>
+                <option value="">Select Cuisines</option>
+                <option value="North Indian">North Indian</option>
+                <option value="South Indian">South Indian</option>
+                <option value="Chinese">Chinese</option>
+                <option value="Fast Food">Fast Food</option>
+                <option value="Biryani">Biryani</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="rest_type">Restaurant Type</label>
+            <select id="rest_type" name="rest_type" required>
+                <option value="">Select Type</option>
+                <option value="Casual Dining">Casual Dining</option>
+                <option value="Quick Bites">Quick Bites</option>
+                <option value="Fine Dining">Fine Dining</option>
+                <option value="Cafe">Cafe</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="approx_cost">Approx Cost for Two (₹)</label>
+            <input type="number" id="approx_cost" name="approx_cost"
+                   min="0" required>
+        </div>
+
+        <div class="form-group">
+            <label for="votes">Votes</label>
+            <input type="number" id="votes" name="votes" min="0" required>
+        </div>
+
+        <div class="form-group">
+            <label for="online_order">Online Order</label>
+            <select id="online_order" name="online_order" required>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="book_table">Book Table</label>
+            <select id="book_table" name="book_table" required>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+
+        <button type="submit">Predict Rating</button>
+    </form>
+
+    <!-- Colored result card -->
+    <div id="resultCard"
+         style="margin-top:20px; padding:20px; border-radius:10px; display:none;">
+        <div id="result" class="result"></div>
+        <div id="explanation"
+             style="font-size:16px; color:#333; margin-top:8px;"></div>
+    </div>
+
+    <div id="error" class="error"></div>
+
+    <hr style="margin-top:40px;">
+
+<script>
+document.getElementById('ratingForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData);
+
+    try {
+        const response = await fetch('/predict', {
+            method: 'POST',
+            body: new URLSearchParams(data)
+        });
+        const result = await response.json();
+
+        if (response.ok) {
+            const card = document.getElementById('resultCard');
+            const ratingText = document.getElementById('result');
+            const explanationText = document.getElementById('explanation');
+
+            const name = data.name || "This restaurant";
+            ratingText.innerText = `${name} → Predicted Rating: ${result.rating} ★`;
+            explanationText.innerText = result.explanation || '';
+
+            if (result.color === 'green') {
+                card.style.backgroundColor = '#c8e6c9';
+                card.style.border = '2px solid #2e7d32';
+            } else if (result.color === 'yellow') {
+                card.style.backgroundColor = '#fff9c4';
+                card.style.border = '2px solid #f9a825';
+            } else {
+                card.style.backgroundColor = '#ffcdd2';
+                card.style.border = '2px solid #c62828';
+            }
+
+            card.style.display = 'block';
+            document.getElementById('error').innerText = '';
+        } else {
+            document.getElementById('resultCard').style.display = 'none';
+            document.getElementById('error').innerText = 'Error: ' + result.error;
+        }
+    } catch (err) {
+        document.getElementById('resultCard').style.display = 'none';
+        document.getElementById('error').innerText =
+            'Network error. Is the server running?';
+    }
+});
+
+// Side menu open/close
+const sideMenu = document.getElementById('sideMenu');
+document.getElementById('sideMenuToggle').addEventListener('click', () => {
+    if (sideMenu.style.left === '0px') {
+        sideMenu.style.left = '-220px';
+    } else {
+        sideMenu.style.left = '0px';
+    }
+});
+
+// Scroll to sections
+function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+        sideMenu.style.left = '-220px';
+    }
+}
+</script>
+</body>
+</html>

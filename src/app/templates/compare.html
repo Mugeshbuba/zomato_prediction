@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare Restaurant Ratings</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1976d2;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 600;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .card {
+            flex: 1;
+            min-width: 260px;
+            border: 1px solid #ddd;
+            padding: 16px;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        button {
+            background-color: #1976d2;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        button:hover {
+            background-color: #115293;
+        }
+        #compareResult {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+        a.back-link {
+            display: inline-block;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: #1976d2;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="/" class="back-link">&larr; Back to Single Prediction</a>
+    <h1>Compare Two Restaurants</h1>
+    <p style="text-align:center; color:#666;">
+        Enter details for Restaurant A and B, then click Compare.
+    </p>
+
+    <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:20px;">
+        <!-- Restaurant A -->
+        <form id="compareFormA" class="card">
+            <h3>Restaurant A</h3>
+            <div class="form-group">
+                <label for="name_a">Name</label>
+                <input type="text" id="name_a" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="location_a">Location</label>
+                <select id="location_a" name="location" required>
+                    <option value="">Select Location</option>
+                    <option value="Koramangala">Koramangala</option>
+                    <option value="Indiranagar">Indiranagar</option>
+                    <option value="HSR Layout">HSR Layout</option>
+                    <option value="BTM Layout">BTM Layout</option>
+                    <option value="Jayanagar">Jayanagar</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="cuisines_a">Cuisines</label>
+                <select id="cuisines_a" name="cuisines" required>
+                    <option value="">Select Cuisines</option>
+                    <option value="North Indian">North Indian</option>
+                    <option value="South Indian">South Indian</option>
+                    <option value="Chinese">Chinese</option>
+                    <option value="Fast Food">Fast Food</option>
+                    <option value="Biryani">Biryani</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="rest_type_a">Restaurant Type</label>
+                <select id="rest_type_a" name="rest_type" required>
+                    <option value="">Select Type</option>
+                    <option value="Casual Dining">Casual Dining</option>
+                    <option value="Quick Bites">Quick Bites</option>
+                    <option value="Fine Dining">Fine Dining</option>
+                    <option value="Cafe">Cafe</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="approx_cost_a">Approx Cost for Two (₹)</label>
+                <input type="number" id="approx_cost_a" name="approx_cost" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="votes_a">Votes</label>
+                <input type="number" id="votes_a" name="votes" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="online_order_a">Online Order</label>
+                <select id="online_order_a" name="online_order" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="book_table_a">Book Table</label>
+                <select id="book_table_a" name="book_table" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+        </form>
+
+        <!-- Restaurant B -->
+        <form id="compareFormB" class="card">
+            <h3>Restaurant B</h3>
+            <div class="form-group">
+                <label for="name_b">Name</label>
+                <input type="text" id="name_b" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="location_b">Location</label>
+                <select id="location_b" name="location" required>
+                    <option value="">Select Location</option>
+                    <option value="Koramangala">Koramangala</option>
+                    <option value="Indiranagar">Indiranagar</option>
+                    <option value="HSR Layout">HSR Layout</option>
+                    <option value="BTM Layout">BTM Layout</option>
+                    <option value="Jayanagar">Jayanagar</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="cuisines_b">Cuisines</label>
+                <select id="cuisines_b" name="cuisines" required>
+                    <option value="">Select Cuisines</option>
+                    <option value="North Indian">North Indian</option>
+                    <option value="South Indian">South Indian</option>
+                    <option value="Chinese">Chinese</option>
+                    <option value="Fast Food">Fast Food</option>
+                    <option value="Biryani">Biryani</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="rest_type_b">Restaurant Type</label>
+                <select id="rest_type_b" name="rest_type" required>
+                    <option value="">Select Type</option>
+                    <option value="Casual Dining">Casual Dining</option>
+                    <option value="Quick Bites">Quick Bites</option>
+                    <option value="Fine Dining">Fine Dining</option>
+                    <option value="Cafe">Cafe</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="approx_cost_b">Approx Cost for Two (₹)</label>
+                <input type="number" id="approx_cost_b" name="approx_cost" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="votes_b">Votes</label>
+                <input type="number" id="votes_b" name="votes" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="online_order_b">Online Order</label>
+                <select id="online_order_b" name="online_order" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="book_table_b">Book Table</label>
+                <select id="book_table_b" name="book_table" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+        </form>
+    </div>
+
+    <button id="compareButton">Compare Ratings</button>
+    <div id="compareResult"></div>
+</div>
+
+<script>
+document.getElementById('compareButton').addEventListener('click', async function () {
+    const formA = document.getElementById('compareFormA');
+    const formB = document.getElementById('compareFormB');
+
+    const dataA = Object.fromEntries(new FormData(formA));
+    const dataB = Object.fromEntries(new FormData(formB));
+
+    try {
+        const [resA, resB] = await Promise.all([
+            fetch('/predict', { method: 'POST', body: new URLSearchParams(dataA) }),
+            fetch('/predict', { method: 'POST', body: new URLSearchParams(dataB) })
+        ]);
+
+        const jsonA = await resA.json();
+        const jsonB = await resB.json();
+
+        if (!resA.ok || !resB.ok) {
+            document.getElementById('compareResult').innerText =
+                'Error in comparison. Please check inputs.';
+            return;
+        }
+
+        const nameA = dataA.name || 'Restaurant A';
+        const nameB = dataB.name || 'Restaurant B';
+
+        let text = `${nameA}: ${jsonA.rating} ★   |   ${nameB}: ${jsonB.rating} ★. `;
+
+        if (jsonA.rating > jsonB.rating) {
+            text += `${nameA} is predicted to have a better rating.`;
+        } else if (jsonB.rating > jsonA.rating) {
+            text += `${nameB} is predicted to have a better rating.`;
+        } else {
+            text += `Both have similar predicted ratings.`;
+        }
+
+        document.getElementById('compareResult').innerText = text;
+    } catch (err) {
+        document.getElementById('compareResult').innerText =
+            'Network error during comparison.';
+    }
+});
+</script>
+</body>
+</html>

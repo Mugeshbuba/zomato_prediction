@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Location Heatmap</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background:#f8f9fa; }
+        .container {
+            max-width: 800px; margin:40px auto; padding:20px;
+            background:#fff; border-radius:12px;
+            box-shadow:0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .center-block { text-align:center; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Back link (left) -->
+    <a href="/" style="text-decoration:none; color:#1976d2; font-weight:600;
+                       display:inline-block; margin-bottom:10px; margin-top:10px;">
+        ← Back to Prediction / Menu
+    </a>
+
+    <!-- Centered heatmap content -->
+    <div class="center-block">
+        <h1>Location Heatmap</h1>
+        <p>Average ratings of different areas from the dataset.</p>
+
+        <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:10px; justify-content:center;">
+            {% if location_avgs %}
+                {% for loc in location_avgs %}
+                    {% set rating = loc.avg_rating %}
+                    {% if rating >= 4.0 %}
+                        {% set bg = '#c8e6c9' %}
+                        {% set border = '#2e7d32' %}
+                    {% elif rating >= 3.5 %}
+                        {% set bg = '#fff9c4' %}
+                        {% set border = '#f9a825' %}
+                    {% else %}
+                        {% set bg = '#ffcdd2' %}
+                        {% set border = '#c62828' %}
+                    {% endif %}
+                    <div style="
+                        padding:12px 14px;
+                        border-radius:10px;
+                        min-width:160px;
+                        background-color: {{ bg }};
+                        border:2px solid {{ border }};
+                    ">
+                        <div style="font-weight:bold;">{{ loc.location }}</div>
+                        <div>Avg Rating: {{ '%.2f'|format(rating) }} ★</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p style="color:#999;">No location data available.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+const sideMenu = document.getElementById('sideMenu');
+document.getElementById('sideMenuToggle').addEventListener('click', () => {
+    if (sideMenu.style.left === '0px') {
+        sideMenu.style.left = '-220px';
+    } else {
+        sideMenu.style.left = '0px';
+    }
+});
+</script>
+</body>
+</html>
